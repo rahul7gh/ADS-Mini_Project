@@ -85,7 +85,9 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 		boolean isHashTableEfficient=isHashTableEfficient();
 		
 		double currentLoad=(1.0*count)/size;
-		if(currentLoad>=loadFactor )
+		if(currentLoad>=loadFactor 
+				|| !isHashTableEfficient
+				)
 		{
 			rehash();
 		}
@@ -125,7 +127,8 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 		if(resized[hash]==null)
 			resized[hash]=new AVLTree<>();
 		
-		resized[hash].add(current);
+//		resized[hash].add(current);
+		resized[hash].add(new BinaryTreeNode<T>(current.getData()));
 		
 		if(current.getLeft()!=null)
 			inOrderRehashingOfIthBucket(current.getLeft(), resized);
@@ -154,6 +157,7 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 	{
 		for (int i = 0; i < table.length; i++) {
 			if(table[i]==null) continue;
+			System.out.println("<--"+i+"-->");
 			Map<Integer, List<BinaryTreeNode<T>>> map = table[i].levelOrderTraversal();
 			
 			map.entrySet().stream().forEach(

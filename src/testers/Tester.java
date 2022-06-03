@@ -1,5 +1,7 @@
 package testers;
 
+import java.util.Random;
+
 import implementations.HashTable;
 import implementations.hashFuntions.ModNHashFunction;
 
@@ -7,21 +9,21 @@ public class Tester {
 
 	public static void main(String[] args) {
 		HashTable<Integer> intHash=new HashTable<>(new ModNHashFunction<Integer>());
-		
-		int size=10;
-		for (int i = 0; i < size; i++) {
+		Random r = new Random();
+		int size=40;
+		for (int i = 1; i <= size; i++) {
 			
-			intHash.add(i*10);
+			intHash.add(i*10+r.nextInt(10));
 			
 				
 		}
-		
+		intHash.add(40);
 		
 //		HashTable<String> strHash=new HashTable<>(new ModNHashFunction<String>());
 //		
 //		HashTable<Double> dobHash=new HashTable<>(new ModNHashFunction<Double>());
 		intHash.debug();
-		System.out.println(intHash.toString());
+//		System.out.println(intHash.toString());
 //		strHash.toString();
 		
 		
