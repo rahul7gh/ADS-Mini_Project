@@ -51,7 +51,8 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 			
 		while(!stack.isEmpty())
 		{
-			if(getBalanceFactor(stack.peek())>1) break;
+			int balanceFactor = getBalanceFactor(stack.peek());
+			if(balanceFactor>1 || balanceFactor<-1) break;
 			stack.pop();
 		}
 		if(stack.isEmpty()) return;
@@ -152,7 +153,7 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 	
 	public int getBalanceFactor(BinaryTreeNode<T> node)
 	{
-		return Math.abs((getHeight(node.getLeft())-1) - (getHeight(node.getRight())-1));
+		return (getHeight(node.getLeft())-1) - (getHeight(node.getRight())-1);
 	}
 
 	public int getHeight(BinaryTreeNode<T> node) {
