@@ -2,9 +2,11 @@ package implementations;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import implementations.bucketEvaluators.Log2BucketEvaluator;
 import interfaces.HashFunctionIface;
 import interfaces.HashTableIface;
 import models.BinaryTreeNode;
@@ -18,6 +20,11 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 	private int resizingFactor;
 	private double loadFactor;
 	private HashFunctionIface<T> hashFunction;
+	private Log2BucketEvaluator bucketEvaluator;
+	
+	{
+		bucketEvaluator=new Log2BucketEvaluator();
+	}
 	
 	
 	public HashTable(HashFunctionIface<T> hashFunctionIface) {
@@ -74,11 +81,25 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 			count++;
 		}
 		table[hash].add(new BinaryTreeNode<T>(key));
+		
+		boolean isHashTableEfficient=isHashTableEfficient();
+		
 		double currentLoad=(1.0*count)/size;
-		if(currentLoad>=loadFactor)
+		if(currentLoad>=loadFactor )
 		{
 			rehash();
 		}
+	}
+
+	private boolean isHashTableEfficient() {
+		for (int i = 0; i < table.length; i++) {
+			if(table[i]!=null)
+			{
+				if(!bucketEvaluator.isBucketEfficient(table[i].getSize(), size))
+					return false;
+			}
+		}
+		return true;
 	}
 
 	private void rehash() {

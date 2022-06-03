@@ -14,24 +14,36 @@ import models.BinaryTreeNode;
 public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T> {
 
 	private BinaryTreeNode<T> root;
+	private int size;
 	
 	public AVLTree() {
 		this.root=null;
+		this.size=0;
 	}
 	
 	public BinaryTreeNode<T> getRoot() {
 		return root;
 	}
 
+	
 //	public void setRoot(BinaryTreeNode<T> root) {
 //		this.root = root;
 //	}
+
+	public int getSize() {
+		return size;
+	}
+
+	public void setSize(int size) {
+		this.size = size;
+	}
 
 	@Override
 	public void add(BinaryTreeNode<T> keyNode) {
 		if(root==null)
 		{
 			root=keyNode;
+			size++;
 			return;
 		}
 		BinaryTreeNode<T> cur=root;
@@ -49,6 +61,7 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 		else
 			stack.peek().setRight(keyNode);
 			
+		size++;
 		while(!stack.isEmpty())
 		{
 			int balanceFactor = getBalanceFactor(stack.peek());
