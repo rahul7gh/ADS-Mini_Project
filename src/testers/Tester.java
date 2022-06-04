@@ -2,28 +2,59 @@ package testers;
 
 import java.util.Random;
 
+import implementations.AVLTree;
 import implementations.HashTable;
 import implementations.hashFuntions.ModNHashFunction;
+import models.BinaryTreeNode;
 
 public class Tester {
 
 	public static void main(String[] args) {
+		
+		AVLTree<Integer> avl= new AVLTree<>();
+		avl.add(new BinaryTreeNode<Integer>(10));
+		System.out.println(avl.search(new BinaryTreeNode<Integer>(10)));
+		avl.delete(new BinaryTreeNode<Integer>(10));
+		System.out.println(avl.search(new BinaryTreeNode<Integer>(10)));
+		System.out.println(avl.search(new BinaryTreeNode<Integer>(20)));
+		
+		System.exit(0);
 		HashTable<Integer> intHash=new HashTable<>(new ModNHashFunction<Integer>());
 		Random r = new Random();
-		int size=40;
-		for (int i = 1; i <= size; i++) {
-			
-			intHash.add(i*10+r.nextInt(10));
+		int size=10;
+		int[] arr= new int[size];
+		arr=new int[] {8,13,29,30,49,59,62,79,87,98};
+//		,102,114,123,131,140,159,166,172,185,197,200,217,226,238,241,258,261,275,281,294,304,317,324,337,348,358,368,371,383,393};
+		for (int i = 0; i < arr.length; i++) {
+//			arr[i]=i*10+r.nextInt(10);
+			System.out.print(arr[i]+",");
+			intHash.add(arr[i]);
 			
 				
 		}
-		intHash.add(40);
+		System.out.println();
+//		intHash.add(40);
 		
 //		HashTable<String> strHash=new HashTable<>(new ModNHashFunction<String>());
 //		
 //		HashTable<Double> dobHash=new HashTable<>(new ModNHashFunction<Double>());
-		intHash.debug();
+//		intHash.debug();
 //		System.out.println(intHash.toString());
+//		System.out.println(intHash.search(29));
+//		intHash.delete(29);
+//		System.out.println(intHash.search(29));
+		
+		System.out.println(intHash.search(30));
+		intHash.delete(30);
+		System.out.println(intHash.search(30));
+		
+//		System.out.println(intHash.search(79));
+//		intHash.delete(79);
+//		System.out.println(intHash.search(79));
+
+//		System.out.println(intHash.search(6200));
+//		intHash.delete(6200);
+//		System.out.println(intHash.search(6200));
 //		strHash.toString();
 		
 		
