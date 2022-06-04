@@ -25,22 +25,24 @@ public class Tester {
 //		System.exit(0);
 		HashTable<Integer> intHash=new HashTable<>(new ModNHashFunction<Integer>());
 		Random r = new Random();
-		int size=100;
+		int size=60;
 		int[] arr= new int[size];
-//		arr=new int[] {8,13,62,79,87,29,30,98,49,59};
+//		arr=new int[] {564,852,79,315,987,844,444,663,364,687,903,153,229,424,438,305,802,216,318,313};//,29,30,98,49,59};
 //		,102,114,123,131,140,159,166,172,185,197,200,217,226,238,241,258,261,275,281,294,304,317,324,337,348,358,368,371,383,393};
 		for (int i = 0; i < arr.length; i++) {
-			arr[i]=i*10+r.nextInt(10);
+			arr[i]=i*10+r.nextInt(10*100);
 			System.out.print(arr[i]+",");
-//			intHash.add(arr[i]);	
-			avl.add(new BinaryTreeNode<Integer>(arr[i]));
+			intHash.add(arr[i]);	
+//			avl.add(new BinaryTreeNode<Integer>(arr[i]));
 		}
 		System.out.println();
 		System.out.println(avl.levelOrderTraversal());
 		
 		for (int i = 0; i < arr.length; i++) {
-			avl.delete(new BinaryTreeNode<Integer>(arr[i]));
-			System.out.println(avl.getSize());
+//			avl.delete(new BinaryTreeNode<Integer>(arr[i]));
+			intHash.delete(arr[i]);
+//			System.out.println(intHash.getSize());
+//			System.out.println(avl.levelOrderTraversal());
 		}
 		System.out.println(avl.levelOrderTraversal());
 //		intHash.debug();

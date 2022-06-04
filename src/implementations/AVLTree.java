@@ -185,7 +185,8 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 			{
 //				retVal=current;
 				root=null;
-//				return retVal;
+//				System.out.println(getSize());
+				return retVal;
 			}
 			else
 			{
@@ -196,24 +197,96 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 					stack.peek().setRight(null);
 			}
 			
-//			while(!stack.isEmpty())
-//			{
-//				int bf=getBalanceFactor(stack.peek());
-//				if(bf>1 || bf<-1) break;
-//				
-//				stack.pop();			
-//			}
-//			if(stack.isEmpty()) return retVal;
+			while(!stack.isEmpty())
+			{
+				int bf=getBalanceFactor(stack.peek());
+				if(bf>1 || bf<-1) break;
+				
+				stack.pop();			
+			}
+			if(stack.isEmpty()) return retVal;
 			
+			BinaryTreeNode<T> g= stack.pop();
+			BinaryTreeNode<T> gparent=null;
+			if(!stack.isEmpty())
+				gparent=stack.pop();
+			
+			StringBuilder imbalanceType=new StringBuilder("");
+			
+			BinaryTreeNode<T> p= null;
+			BinaryTreeNode<T> x= null;
+			if(current.compareTo(g)<=0)
+			{
+				imbalanceType.append("R");
+				p=g.getRight();
+			}
+			else
+			{
+				imbalanceType.append("L");
+				p=g.getLeft();
+			}
+			if(p!=null)
+			{
+				if(imbalanceType.toString().equals("R"))
+				{
+					if(getBalanceFactor(p)<=0)
+					{
+						imbalanceType.append("R");
+					}
+					else
+					{
+						imbalanceType.append("L");
+						x=p.getLeft();
+					}
+				}
+				else
+				{
+					if(getBalanceFactor(p)>=0)
+					{
+						imbalanceType.append("L");
+					}
+					else
+					{
+						imbalanceType.append("R");
+						x=p.getRight();
+					}
+				}
+				
+				switch(imbalanceType.toString())
+				{
+					case "LL":
+							rightRotate(gparent, g, p);
+							break;
+						
+					case "RR":
+							leftRotate(gparent, g, p);
+							break;
+						
+					case "LR":
+							leftRotate(g, p, x);
+							rightRotate(gparent, g, x);
+							break;
+						
+					case "RL":
+							rightRotate(g, p, x);
+							leftRotate(gparent, g, x);
+							break;	
+						
+				}
+			}
+		
 			
 		}
 		else
 		{
+//			stack.clear();
+			Stack<BinaryTreeNode<T>> succStack=new Stack<>();
 			BinaryTreeNode<T> successor=current.getRight();
 			BinaryTreeNode<T> successorParent=null;
 			while(successor!=null)
 			{
 				if(successor.getLeft()==null) break;
+				succStack.push(successor);
 				successorParent=successor;
 				successor=successor.getLeft();
 			}
@@ -244,11 +317,90 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 					successorParent.setLeft(successor.getRight());
 				}
 			}
+			
+			while(!succStack.isEmpty())
+			{
+				int bf=getBalanceFactor(succStack.peek());
+				if(bf>1 || bf<-1) break;
+				
+				succStack.pop();			
+			}
+			if(succStack.isEmpty()) return retVal;
+			
+			BinaryTreeNode<T> g= succStack.pop();
+			BinaryTreeNode<T> gparent=current;
+			if(!succStack.isEmpty())
+				gparent=succStack.pop();
+			
+			StringBuilder imbalanceType=new StringBuilder("");
+			
+			BinaryTreeNode<T> p= null;
+			BinaryTreeNode<T> x= null;
+			if(successor.compareTo(g)<=0)
+			{
+				imbalanceType.append("R");
+				p=g.getRight();
+			}
+			else
+			{
+				imbalanceType.append("L");
+				p=g.getLeft();
+			}
+			if(p!=null)
+			{
+				if(imbalanceType.toString().equals("R"))
+				{
+					if(getBalanceFactor(p)<=0)
+					{
+						imbalanceType.append("R");
+					}
+					else
+					{
+						imbalanceType.append("L");
+						x=p.getLeft();
+					}
+				}
+				else
+				{
+					if(getBalanceFactor(p)>=0)
+					{
+						imbalanceType.append("L");
+					}
+					else
+					{
+						imbalanceType.append("R");
+						x=p.getRight();
+					}
+				}
+				
+				switch(imbalanceType.toString())
+				{
+					case "LL":
+							rightRotate(gparent, g, p);
+							break;
+						
+					case "RR":
+							leftRotate(gparent, g, p);
+							break;
+						
+					case "LR":
+							leftRotate(g, p, x);
+							rightRotate(gparent, g, x);
+							break;
+						
+					case "RL":
+							rightRotate(g, p, x);
+							leftRotate(gparent, g, x);
+							break;	
+						
+				}
+			}
+				
 		}
 	
 		
 		
-		
+//		System.out.println(getSize());
 		
 		
 		return retVal;
@@ -395,6 +547,7 @@ private void swapDataOfNodes(BinaryTreeNode<T> current, BinaryTreeNode<T> succes
 	
 	public int getBalanceFactor(BinaryTreeNode<T> node)
 	{
+//		if(node==null) return 0;
 		return (getHeight(node.getLeft())-1) - (getHeight(node.getRight())-1);
 	}
 
