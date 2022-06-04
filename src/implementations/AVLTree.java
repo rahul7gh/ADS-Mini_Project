@@ -159,81 +159,187 @@ public class AVLTree<T extends Comparable<? super T>> implements AVLTreeIface<T>
 	@Override
 	public BinaryTreeNode<T> delete(BinaryTreeNode<T> keyNode) {
 		
-		return deleteRecursive(root, keyNode);
+
+		
+		if(keyNode==null || root==null) return null;
+		
+		Stack<BinaryTreeNode<T>> stack= new Stack<>();
+		BinaryTreeNode<T> current=root;
+		while(current!=null)
+		{
+			if(keyNode.equals(current)) break;
+			stack.push(current);
+			if(keyNode.compareTo(current)<=0)
+				current=current.getLeft();
+			else
+				current=current.getRight();
+				
+		}
+		
+		if(current==null) return null;
+		BinaryTreeNode<T> retVal=current;
+		size--;
+		if(current.getLeft()==null && current.getRight()==null)
+		{
+			if(current==root)
+			{
+//				retVal=current;
+				root=null;
+//				return retVal;
+			}
+			else
+			{
+//				retVal=current;
+				if(current.compareTo(stack.peek())<=0)
+					stack.peek().setLeft(null);
+				else
+					stack.peek().setRight(null);
+			}
+			
+//			while(!stack.isEmpty())
+//			{
+//				int bf=getBalanceFactor(stack.peek());
+//				if(bf>1 || bf<-1) break;
+//				
+//				stack.pop();			
+//			}
+//			if(stack.isEmpty()) return retVal;
+			
+			
+		}
+		else
+		{
+			BinaryTreeNode<T> successor=current.getRight();
+			BinaryTreeNode<T> successorParent=null;
+			while(successor!=null)
+			{
+				if(successor.getLeft()==null) break;
+				successorParent=successor;
+				successor=successor.getLeft();
+			}
+			
+			if(successor==null)
+			{
+				if(current==root)
+				{
+					root=root.getLeft();
+				}
+				else
+				{
+					if(current.compareTo(stack.peek())<=0)
+						stack.peek().setLeft(current.getLeft());
+					else
+						stack.peek().setRight(current.getLeft());
+				}
+			}
+			else
+			{
+				swapDataOfNodes(current,successor);
+				if(successorParent==null)
+				{
+					current.setRight(successor.getRight());
+				}
+				else
+				{
+					successorParent.setLeft(successor.getRight());
+				}
+			}
+		}
+	
+		
+		
+		
+		
+		
+		return retVal;
+//		return deleteRecursive(root, keyNode);
+		
+	
+		
+		
+		
+//		return deleteRecursive(root, keyNode);
 		
 	}
 	
-	private BinaryTreeNode<T> deleteRecursive(BinaryTreeNode<T> node,BinaryTreeNode<T> keyNode) {
-		
-		if(node==null)
-			return node;
-		
-		//key<node.data
-		if(keyNode.compareTo(node)<0) {
-			node.setLeft(deleteRecursive(node.getLeft(),keyNode));
-		}
-		//key>node.data
-		else if(keyNode.compareTo(node)>0) {
-			node.setRight(deleteRecursive(node.getRight(),keyNode));
-		}
-		//key==node.data
-		else {
-			if ((node.getLeft() == null) || (node.getRight() == null))
-            {
-				BinaryTreeNode<T> temp = null;
-                if (temp == node.getLeft())
-                    temp = node.getRight();
-                else
-                    temp = node.getRight();
- 
-                
-                if (temp == null)
-                {
-                    temp = node;
-                    node = null;
-                }
-                else 
-                    node = temp; 
-            }else
-            {           
-            	BinaryTreeNode<T> temp = minValueNode(node.getRight());
- 
-               node.setData(temp.getData());
-               node.setRight(deleteRecursive(node.getRight(), temp));
-            }
-		}
-		
-		if (node == null)
-            return node;
- 
-       
-        int balance = getBalanceFactor(node);
- 
-        
-        // Left Left Case
-        if (balance > 1 && getBalanceFactor(node.getLeft()) >= 0)
-            return right(node);
- 
-        // Left Right Case
-        if (balance > 1 && getBalanceFactor(node.getLeft()) < 0)
-        {
-        	node.setLeft(left(node.getLeft()));
-            return right(node);
-        }
- 
-        // Right Right Case
-        if (balance < -1 && getBalanceFactor(node.getRight()) <= 0)
-            return left(node);
- 
-        // Right Left Case
-        if (balance < -1 && getBalanceFactor(node.getRight()) > 0)
-        {
-        	node.setRight(right(node.getRight()));
-            return left(node);
-        }
- 
-        return node;
-	}
+	
+private void swapDataOfNodes(BinaryTreeNode<T> current, BinaryTreeNode<T> successor) {
+	T temp=current.getData();
+	current.setData(successor.getData());
+	successor.setData(temp);
+}
+
+//	private BinaryTreeNode<T> deleteRecursive(BinaryTreeNode<T> node,BinaryTreeNode<T> keyNode) { 
+//		
+//		if(node==null)
+//			return node;
+//		
+//		//key<node.data
+//		if(keyNode.compareTo(node)<0) {
+//			node.setLeft(deleteRecursive(node.getLeft(),keyNode));
+//		}
+//		//key>node.data
+//		else if(keyNode.compareTo(node)>0) {
+//			node.setRight(deleteRecursive(node.getRight(),keyNode));
+//		}
+//		//key==node.data
+//		else {
+//			if ((node.getLeft() == null) || (node.getRight() == null))
+//            {
+//				BinaryTreeNode<T> temp = null;
+//                if (temp == node.getLeft())
+//                    temp = node.getRight();
+//                else
+//                    temp = node.getRight();
+// 
+//                
+//                if (temp == null)
+//                {
+//                    temp = node;
+//                    node = null;
+//                }
+//                else 
+//                    node = temp; 
+//            }else
+//            {           
+//            	BinaryTreeNode<T> temp = minValueNode(node.getRight());
+// 
+//               node.setData(temp.getData());
+//               node.setRight(deleteRecursive(node.getRight(), temp));
+//            }
+//		}
+//		
+//		if (node == null)
+//            return node;
+// 
+//       
+//        int balance = getBalanceFactor(node);
+// 
+//        
+//        // Left Left Case
+//        if (balance > 1 && getBalanceFactor(node.getLeft()) >= 0)
+//            return right(node);
+// 
+//        // Left Right Case
+//        if (balance > 1 && getBalanceFactor(node.getLeft()) < 0)
+//        {
+//        	node.setLeft(left(node.getLeft()));
+//            return right(node);
+//        }
+// 
+//        // Right Right Case
+//        if (balance < -1 && getBalanceFactor(node.getRight()) <= 0)
+//            return left(node);
+// 
+//        // Right Left Case
+//        if (balance < -1 && getBalanceFactor(node.getRight()) > 0)
+//        {
+//        	node.setRight(right(node.getRight()));
+//            return left(node);
+//        }
+// 
+//        return node;
+//	}
 	
 	private BinaryTreeNode<T> left(BinaryTreeNode<T> x) {
 		BinaryTreeNode<T> y = x.getRight();
