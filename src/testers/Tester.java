@@ -25,26 +25,46 @@ public class Tester {
 //		System.exit(0);
 		HashTable<Integer> intHash=new HashTable<>(new ModNHashFunction<Integer>());
 		Random r = new Random();
-		int size=60;
+		int size=10;
 		int[] arr= new int[size];
-//		arr=new int[] {564,852,79,315,987,844,444,663,364,687,903,153,229,424,438,305,802,216,318,313};//,29,30,98,49,59};
+//		arr=new int[] {86,241,194,785,597,848,424,704,689,1004};
+		arr=new int[] {604,927,100,590,922,382,428,290,494,243};
+		
+		
+		//,29,30,98,49,59};
 //		,102,114,123,131,140,159,166,172,185,197,200,217,226,238,241,258,261,275,281,294,304,317,324,337,348,358,368,371,383,393};
 		for (int i = 0; i < arr.length; i++) {
 			arr[i]=i*10+r.nextInt(10*100);
 			System.out.print(arr[i]+",");
-			intHash.add(arr[i]);	
-//			avl.add(new BinaryTreeNode<Integer>(arr[i]));
+//			intHash.add(arr[i]);	
+			avl.add(new BinaryTreeNode<Integer>(arr[i]));
 		}
 		System.out.println();
-		System.out.println(avl.levelOrderTraversal());
+		avl.levelOrderTraversal();
 		
 		for (int i = 0; i < arr.length; i++) {
-//			avl.delete(new BinaryTreeNode<Integer>(arr[i]));
-			intHash.delete(arr[i]);
+			System.out.println(avl.search(new BinaryTreeNode<Integer>(arr[i])));
+			avl.delete(new BinaryTreeNode<Integer>(arr[i]));
+			System.out.println(avl.search(new BinaryTreeNode<Integer>(arr[i])));
+		
+			//			System.out.println(avl.getSize()+"  "+arr[i]);
+//			System.out.println(intHash.search(arr[i]));
+//			intHash.delete(arr[i]);
+//			System.out.println(intHash.search(arr[i]));
 //			System.out.println(intHash.getSize());
 //			System.out.println(avl.levelOrderTraversal());
 		}
-		System.out.println(avl.levelOrderTraversal());
+		avl.heightAndBalanceFactorOfEveryNode(avl.getRoot());
+		
+//		for (int i = 0; i < 10; i++) {
+//		
+//			avl.add(new BinaryTreeNode<Integer>(i*10+r.nextInt(10*100)));
+//		}
+//		avl.heightAndBalanceFactorOfEveryNode(avl.getRoot());
+//		avl.levelOrderTraversal();
+		
+//		avl.heightAndBalanceFactorOfEveryNode(avl.getRoot());
+//		System.out.println(avl.levelOrderTraversal());
 //		intHash.debug();
 //		for (int i = 0; i < arr.length; i++) {
 //			System.out.println("<-->");
