@@ -144,12 +144,16 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 	@Override
 	public BinaryTreeNode<T> delete(T key) {
 		int hash=hashFunction.getHash(key, size);
+		if(table[hash]!=null)
+			return null;
 		return table[hash].delete(new BinaryTreeNode<T>(key));
 	}
 
 	@Override
 	public BinaryTreeNode<T> search(T key) {
 		int hash=hashFunction.getHash(key, size);
+		if(table[hash]!=null)
+			return null;
 		return table[hash].search(new BinaryTreeNode<T>(key));
 	}
 	@Override
