@@ -30,5 +30,12 @@ public class Tester {
 			System.out.println(intHash.search(arr[i]));
 		}
 		
+		for (int i = 0; i < arr.length; i++) {
+			arr[i]=i*10+r.nextInt(10*100);
+			System.out.print(arr[i]+",");
+			intHash.add(arr[i]);	
+
+		}
+		intHash.debug();
 	}
 }

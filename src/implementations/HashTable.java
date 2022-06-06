@@ -162,12 +162,13 @@ public class HashTable<T extends Comparable<? super T>> implements HashTableIfac
 		for (int i = 0; i < table.length; i++) {
 			if(table[i]==null) continue;
 			System.out.println("<--"+i+"-->");
-			Map<Integer, List<BinaryTreeNode<T>>> map = table[i].levelOrderTraversal();
-			
-			map.entrySet().stream().forEach(
-					entry-> entry.getValue().stream().filter(node-> node.getData()!=null)
-					.forEach(node-> System.out.println(entry.getKey()+"<>"+node+"<>"))
-					);
+			table[i].printTreeLevelOrder();
+//			Map<Integer, List<BinaryTreeNode<T>>> map = table[i].levelOrderTraversal();
+//			
+//			map.entrySet().stream().forEach(
+//					entry-> entry.getValue().stream().filter(node-> node.getData()!=null)
+//					.forEach(node-> System.out.println(entry.getKey()+"<>"+node+"<>"))
+//					);
 			System.out.println("<--->");
 		}
 	}

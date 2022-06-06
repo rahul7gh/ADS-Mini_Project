@@ -1,17 +1,38 @@
 package models;
 
+
+
 public class BinaryTreeNode<T extends Comparable<? super T>>
 	implements Comparable<BinaryTreeNode<T>> {
 	
 	private T data;
 	private BinaryTreeNode<T> left;
 	private BinaryTreeNode<T> right;
+	
+	private int height;
+	
 	public BinaryTreeNode(T data) {
 		super();
 		this.data = data;
 		this.left = null;
 		this.right = null;
+		height=1;
 	}
+	
+	
+	
+	public int getHeight() {
+		return height;
+	}
+
+
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+
+
 	public T getData() {
 		return data;
 	}
